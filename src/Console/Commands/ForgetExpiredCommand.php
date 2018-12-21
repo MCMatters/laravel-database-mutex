@@ -4,15 +4,12 @@ declare(strict_types = 1);
 
 namespace McMatters\LaravelDatabaseMutex\Console\Commands;
 
-use Illuminate\Console\Command;
-use McMatters\LaravelDatabaseMutex\Managers\DatabaseMutexManager;
-
 /**
  * Class ForgetExpiredCommand
  *
  * @package McMatters\LaravelDatabaseMutex\Console\Commands
  */
-class ForgetExpiredCommand extends Command
+class ForgetExpiredCommand extends BaseForgetCommand
 {
     /**
      * @var string
@@ -29,7 +26,7 @@ class ForgetExpiredCommand extends Command
      */
     public function handle(): void
     {
-        (new DatabaseMutexManager())->forgetExpired();
+        $this->manager->forgetExpired();
 
         $this->info('All expired mutexes have been successfully forgotten.');
     }

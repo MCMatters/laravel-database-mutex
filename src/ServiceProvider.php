@@ -9,6 +9,8 @@ use Laravel\Lumen\Application as LumenApplication;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use McMatters\LaravelDatabaseMutex\Console\Commands\ForgetAllCommand;
 use McMatters\LaravelDatabaseMutex\Console\Commands\ForgetExpiredCommand;
+use McMatters\LaravelDatabaseMutex\Contracts\DatabaseMutexManagerContract;
+use McMatters\LaravelDatabaseMutex\Managers\DatabaseMutexManager;
 
 /**
  * Class ServiceProvider
@@ -45,17 +47,41 @@ class ServiceProvider extends BaseServiceProvider
             'database-mutex'
         );
 
+        $this->registerManager();
+        $this->registerConsoleCommands();
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerManager(): void
+    {
+        $this->app->singleton(
+            DatabaseMutexManagerContract::class,
+            DatabaseMutexManager::class
+        );
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerConsoleCommands(): void
+    {
         $this->app->singleton(
             'command.laravel-database-mutex.forget-all',
-            function () {
-                return new ForgetAllCommand();
+            function ($app) {
+                return new ForgetAllCommand(
+                    $app->make(DatabaseMutexManagerContract::class)
+                );
             }
         );
 
         $this->app->singleton(
             'command.laravel-database-mutex.forget-expired',
-            function () {
-                return new ForgetExpiredCommand();
+            function ($app) {
+                return new ForgetExpiredCommand(
+                    $app->make(DatabaseMutexManagerContract::class)
+                );
             }
         );
 

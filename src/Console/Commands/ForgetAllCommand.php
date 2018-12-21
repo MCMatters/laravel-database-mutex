@@ -4,15 +4,12 @@ declare(strict_types = 1);
 
 namespace McMatters\LaravelDatabaseMutex\Console\Commands;
 
-use Illuminate\Console\Command;
-use McMatters\LaravelDatabaseMutex\Managers\DatabaseMutexManager;
-
 /**
  * Class ForgetAllCommand
  *
  * @package McMatters\LaravelDatabaseMutex\Console\Commands
  */
-class ForgetAllCommand extends Command
+class ForgetAllCommand extends BaseForgetCommand
 {
     /**
      * @var string
@@ -29,7 +26,7 @@ class ForgetAllCommand extends Command
      */
     public function handle(): void
     {
-        (new DatabaseMutexManager())->forgetAll();
+        $this->manager->forgetAll();
 
         $this->info('All mutexes have been successfully forgotten.');
     }

@@ -7,6 +7,11 @@ namespace McMatters\LaravelDatabaseMutex\Contracts;
 use Carbon\Carbon;
 use McMatters\LaravelDatabaseMutex\Models\Mutex;
 
+/**
+ * Interface DatabaseMutexManagerContract
+ *
+ * @package McMatters\LaravelDatabaseMutex\Contracts
+ */
 interface DatabaseMutexManagerContract
 {
     /**
@@ -30,4 +35,21 @@ interface DatabaseMutexManagerContract
      * @return void
      */
     public function forget(string $name): void;
+
+    /**
+     * @return void
+     */
+    public function forgetExpired(): void;
+
+    /**
+     * @return void
+     */
+    public function forgetAll(): void;
+
+    /**
+     * @param mixed $payload
+     *
+     * @return string
+     */
+    public function getName($payload): string;
 }
