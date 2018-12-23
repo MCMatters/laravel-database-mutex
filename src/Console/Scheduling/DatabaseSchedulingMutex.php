@@ -42,7 +42,7 @@ class DatabaseSchedulingMutex implements SchedulingMutex
     {
         return (bool) $this->manager->create(
             $event->mutexName().$time->format('Hi'),
-            Carbon::parse('+1 hour')
+            Carbon::now()->addHour()
         );
     }
 

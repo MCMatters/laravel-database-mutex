@@ -40,7 +40,7 @@ class DatabaseEventMutex implements EventMutex
     {
         return (bool) $this->manager->create(
             $event->mutexName(),
-            Carbon::now()->addSeconds($event->expiresAt)
+            Carbon::now()->addMinutes($event->expiresAt)
         );
     }
 
