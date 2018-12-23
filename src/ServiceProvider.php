@@ -4,11 +4,16 @@ declare(strict_types = 1);
 
 namespace McMatters\LaravelDatabaseMutex;
 
+use Illuminate\Console\Scheduling\EventMutex;
+use Illuminate\Console\Scheduling\SchedulingMutex;
 use Illuminate\Foundation\Application as LaravelApplication;
+use Illuminate\Support\Facades\Config;
 use Laravel\Lumen\Application as LumenApplication;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use McMatters\LaravelDatabaseMutex\Console\Commands\ForgetAllCommand;
 use McMatters\LaravelDatabaseMutex\Console\Commands\ForgetExpiredCommand;
+use McMatters\LaravelDatabaseMutex\Console\Scheduling\DatabaseEventMutex;
+use McMatters\LaravelDatabaseMutex\Console\Scheduling\DatabaseSchedulingMutex;
 use McMatters\LaravelDatabaseMutex\Contracts\DatabaseMutexManagerContract;
 use McMatters\LaravelDatabaseMutex\Managers\DatabaseMutexManager;
 
@@ -49,6 +54,7 @@ class ServiceProvider extends BaseServiceProvider
 
         $this->registerManager();
         $this->registerConsoleCommands();
+        $this->registerSchedulingMutexes();
     }
 
     /**
@@ -89,5 +95,16 @@ class ServiceProvider extends BaseServiceProvider
             'command.laravel-database-mutex.forget-all',
             'command.laravel-database-mutex.forget-expired',
         ]);
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerSchedulingMutexes(): void
+    {
+        if (Config::get('database-mutex.register_scheduling_mutexes')) {
+            $this->app->singleton(EventMutex::class, DatabaseEventMutex::class);
+            $this->app->singleton(SchedulingMutex::class, DatabaseSchedulingMutex::class);
+        }
     }
 }
