@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace McMatters\LaravelDatabaseMutex\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use const false;
@@ -47,5 +48,13 @@ class Mutex extends Model
     {
         $this->setTable(Config::get('database.mutex.table'));
         parent::__construct($attributes);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExpired(): bool
+    {
+        return $this->getAttribute('expires_at') <= Carbon::now();
     }
 }

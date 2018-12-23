@@ -11,7 +11,7 @@ use McMatters\LaravelDatabaseMutex\Exceptions\JsonEncodingException;
 use McMatters\LaravelDatabaseMutex\Exceptions\MutexExistsException;
 use McMatters\LaravelDatabaseMutex\Models\Mutex;
 use const JSON_ERROR_NONE;
-use const null;
+use const false, null;
 use function json_encode, json_last_error, json_last_error_msg, sha1;
 
 /**
@@ -54,11 +54,20 @@ class DatabaseMutexManager implements DatabaseMutexManagerContract
      */
     public function exists(string $name): bool
     {
-        $mutex = new Mutex();
+        /** @var Mutex $mutex */
+        $mutex = Mutex::query()
+            ->where('name', $name)
+            ->first();
 
-        return null !== $mutex->newQuery()
-                ->where('name', $name)
-                ->first([$mutex->getKeyName()]);
+        if (null === $mutex) {
+            return false;
+        }
+
+        if ($mutex->isExpired()) {
+            $mutex->delete();
+        }
+
+        return $mutex->exists;
     }
 
     /**
