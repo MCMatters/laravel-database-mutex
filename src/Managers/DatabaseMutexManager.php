@@ -58,7 +58,7 @@ class DatabaseMutexManager implements DatabaseMutexManagerContract
 
         return null !== $mutex->newQuery()
                 ->where('name', $name)
-                ->first([$mutex->getKey()]);
+                ->first([$mutex->getKeyName()]);
     }
 
     /**

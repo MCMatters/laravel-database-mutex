@@ -26,6 +26,7 @@ class Mutex extends Model
     protected $fillable = [
         'name',
         'expires_at',
+        'created_at',
     ];
 
     /**
