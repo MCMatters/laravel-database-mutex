@@ -35,8 +35,8 @@ class Mutex extends Model
      */
     protected $casts = [
         'name' => 'string',
-        'expires_at' => 'timestamp',
-        'created_at' => 'timestamp',
+        'expires_at' => 'datetime',
+        'created_at' => 'datetime',
     ];
 
     /**
