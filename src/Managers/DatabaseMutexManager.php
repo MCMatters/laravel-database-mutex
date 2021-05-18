@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace McMatters\LaravelDatabaseMutex\Managers;
 
@@ -10,9 +10,10 @@ use McMatters\LaravelDatabaseMutex\Contracts\DatabaseMutexManagerContract;
 use McMatters\LaravelDatabaseMutex\Exceptions\JsonEncodingException;
 use McMatters\LaravelDatabaseMutex\Exceptions\MutexExistsException;
 use McMatters\LaravelDatabaseMutex\Models\Mutex;
-use const JSON_ERROR_NONE;
-use const false, null;
+
 use function json_encode, json_last_error, json_last_error_msg, sha1;
+
+use const false, null, JSON_ERROR_NONE;
 
 /**
  * Class DatabaseMutexManager
@@ -37,8 +38,8 @@ class DatabaseMutexManager implements DatabaseMutexManagerContract
         $now = Carbon::now();
 
         $expiresAt = $expiresAt ?? (clone $now)->addSeconds(
-                Config::get('database-mutex.expire')
-            );
+            Config::get('database-mutex.expire')
+        );
 
         return Mutex::query()->create([
             'name' => $name,
@@ -54,7 +55,7 @@ class DatabaseMutexManager implements DatabaseMutexManagerContract
      */
     public function exists(string $name): bool
     {
-        /** @var Mutex $mutex */
+        /** @var \McMatters\LaravelDatabaseMutex\Models\Mutex $mutex */
         $mutex = Mutex::query()
             ->where('name', $name)
             ->first();
@@ -100,6 +101,7 @@ class DatabaseMutexManager implements DatabaseMutexManagerContract
      * @param mixed $payload
      *
      * @return string
+     *
      * @throws \McMatters\LaravelDatabaseMutex\Exceptions\JsonEncodingException
      */
     public function getName($payload): string
