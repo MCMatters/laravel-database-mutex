@@ -7,6 +7,8 @@ namespace McMatters\LaravelDatabaseMutex\Contracts;
 use Carbon\Carbon;
 use McMatters\LaravelDatabaseMutex\Models\Mutex;
 
+use const null;
+
 /**
  * Interface DatabaseMutexManagerContract
  *

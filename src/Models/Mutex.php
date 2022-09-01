@@ -48,6 +48,7 @@ class Mutex extends Model
     public function __construct(array $attributes = [])
     {
         $this->setTable(Config::get('database.mutex.table'));
+
         parent::__construct($attributes);
     }
 

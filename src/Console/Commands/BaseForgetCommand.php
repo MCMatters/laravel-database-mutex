@@ -27,6 +27,7 @@ class BaseForgetCommand extends Command
     public function __construct(DatabaseMutexManager $manager)
     {
         $this->manager = $manager;
+
         parent::__construct();
     }
 }

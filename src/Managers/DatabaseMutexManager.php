@@ -11,9 +11,14 @@ use McMatters\LaravelDatabaseMutex\Exceptions\JsonEncodingException;
 use McMatters\LaravelDatabaseMutex\Exceptions\MutexExistsException;
 use McMatters\LaravelDatabaseMutex\Models\Mutex;
 
-use function json_encode, json_last_error, json_last_error_msg, sha1;
+use function json_encode;
+use function json_last_error;
+use function json_last_error_msg;
+use function sha1;
 
-use const false, null, JSON_ERROR_NONE;
+use const false;
+use const JSON_ERROR_NONE;
+use const null;
 
 /**
  * Class DatabaseMutexManager
